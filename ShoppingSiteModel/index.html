@@ -1,0 +1,138 @@
+<html lang="en">
+
+<head>
+  <title>Shopping Site</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- relevant scripts for knockoutJS, bootstrap etc -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"crossorigin="anonymous"></script>
+  <script src="http://knockoutjs.com/downloads/knockout-3.5.1.debug.js"></script>
+  <script src="index.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- apply bindings for knockout to do it's thing -->
+  <script>
+    $(function () {
+      var view = ShoppingSiteViewModel();
+      var node = document.getElementById("ShoppingSite");
+      ko.applyBindings(view, node);
+    });
+  </script>
+</head>
+
+<div id="ShoppingSite">
+
+  <body>
+    <!-- header -->
+    <nav class="navbar">
+      <div class="logo"><span class="fa fa-gears">&nbsp;</span>Smart Hardware Shop</div>
+      <ul class="nav-links">
+        <div class="menu">
+          <li>Home</li>
+          <li>About</li>
+          <li>Contact</li>
+        </div>
+      </ul>
+    </nav>
+
+    <!-- news/info banner -->
+    <nav class="newsBar">
+      <p><strong>Welcome to my new online Smart Hardware Shop!</strong>
+        <br> Here you will find all of our amazing new products with many lines currently discounted!
+        You can use the search bar below to search for a specific product or a collection of specific products.
+        To add a product to your cart or view the product description simply hover over the product.
+        You can remove items from the cart by clicking on the red trash can icon next to the product you wish to
+        remove...Happy Shopping!
+      </p>
+    </nav>
+    <br>
+
+    <section class="container">
+      <!-- products section -->
+      <div class="productSection">
+        <h3>Products <span data-bind="text: '(' + Products().length + ')'"></span></h3>
+        <!-- products search -->
+        <div class="searchBar">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search All Products..." data-bind="value: SearchTerm">
+            <div class="input-group-append">
+              <button type="button" class="input-group-text btn btn-danger" data-bind="click: searchProducts">
+                <span class="fa fa-search"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <!-- product tiles -->
+        <div class="wrapper">
+          <div class="content">
+            <div class="productGrid productGridFlexbox">
+              <div class="productGridWrapper" data-bind="foreach: Products">
+                <div class="productGridProductWrapper">
+                  <div class="productGridProduct">
+                    <div class="productGridImageWrapper">
+                      <img class="productGridImage" data-bind="attr: {src: defaultImage}" />
+                    </div>
+                    <span class="productGridTitle" data-bind="text: name"></span>
+                    <span class="productGridPrice" data-bind="text: '£' + price"></span>
+                    <span class="productGridDiscount" data-bind="text: discount + ' Off!'"></span>
+                    <div class="productGridExtendWrapper">
+                      <div class="productGridExtend">
+                        <p class="productGridDescription" data-bind="text: description"></p>
+                        <br>
+                        <button type="button" class="btn btn-primary" data-bind="click: addToCart">
+                          <span>Add to Cart <i class="fa fa-cart-arrow-down"></i></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- cart -->
+      <div class="cartSection">
+        <h3>Cart <span data-bind="text: '(' + CartProducts().length + ')'"></span></h3>
+        <div class="cartScroll">
+          <table class="table col-md-4">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody data-bind="foreach: CartProducts">
+              <tr>
+                <td data-bind="text: name"></td>
+                <td data-bind="text: '£' + price"></td>
+                <td><button type="button" class="btn btn-danger" data-bind="click: removeFromCart">
+                    <span><i class="fa fa-trash"></i></span>
+                  </button></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <strong>&nbsp Total: £
+              <span data-bind="text: CartTotal">
+            </strong>
+            &nbsp;&nbsp;&nbsp;
+            </span>
+            <button type="button" class="btn btn-primary OrderButton" data-bind="disable: CartProducts().length == 0">Order</button>
+          </p>
+        </div>
+    </section>
+  </body>
+</div>
+
+</html>
